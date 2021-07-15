@@ -1,4 +1,4 @@
-# nextcloud-k8s
+# nextcloud-microk8s
 For microk8s single node cluster installation see [official documentation](https://microk8s.io/docs)
 
 ## Prepare microk8s before first deployment
