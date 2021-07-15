@@ -1,0 +1,43 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: nextcloud-adminer
+  labels:
+    app: nextcloud
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      pod-label: nextcloud-adminer-pod
+  template:
+    metadata:
+      labels:
+        pod-label: nextcloud-adminer-pod
+    spec:
+      containers:
+      - name: nextcloud-adminer
+        image: adminer:4
+        env:
+        - name: ADMINER_DESIGN
+          valueFrom:
+            configMapKeyRef:
+              name: nextcloud-configmap
+              key: ADMINER_DESIGN
+        - name: ADMINER_DEFAULT_SERVER
+          valueFrom:
+            configMapKeyRef:
+              name: nextcloud-configmap
+              key: ADMINER_DEFAULT_SERVER
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: nextcloud-adminer
+  labels:
+    app: nextcloud
+spec:
+  selector:
+    pod-label: nextcloud-adminer-pod
+  ports:
+  - protocol: TCP
+    port: 8080

@@ -1,0 +1,61 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: nextcloud-db
+  labels:
+    app: nextcloud
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      pod-label: nextcloud-db-pod
+  template:
+    metadata:
+      labels:
+        pod-label: nextcloud-db-pod
+    spec:
+      containers:
+      - name: mariadb
+        image: mariadb:10.5
+        env:
+        - name: MYSQL_DATABASE
+          valueFrom:
+            configMapKeyRef:
+              name: nextcloud-configmap
+              key: MYSQL_DATABASE
+        - name: MYSQL_ROOT_PASSWORD
+          valueFrom:
+            secretKeyRef:
+              name: nextcloud-secrets
+              key: MYSQL_ROOT_PASSWORD
+        - name: MYSQL_USER
+          valueFrom:
+            secretKeyRef:
+              name: nextcloud-secrets
+              key: MYSQL_USER
+        - name: MYSQL_PASSWORD
+          valueFrom:
+            secretKeyRef:
+              name: nextcloud-secrets
+              key: MYSQL_PASSWORD
+        volumeMounts:
+        - name: db-storage
+          mountPath: /var/lib/mysql
+          subPath: mysql-data
+      volumes:
+      - name: db-storage
+        persistentVolumeClaim:
+          claimName: nextcloud-shared-storage-claim
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: nextcloud-db
+  labels:
+    app: nextcloud
+spec:
+  selector:
+    pod-label: nextcloud-db-pod
+  ports:
+  - protocol: TCP
+    port: 3306

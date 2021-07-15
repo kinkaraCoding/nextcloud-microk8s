@@ -1,0 +1,76 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: nextcloud-server
+  labels:
+    app: nextcloud
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      pod-label: nextcloud-server-pod
+  template:
+    metadata:
+      labels:
+        pod-label: nextcloud-server-pod
+    spec:
+      containers:
+      - name: nextcloud
+        image: nextcloud:21-apache
+        env:
+        - name: MYSQL_DATABASE
+          valueFrom:
+            configMapKeyRef:
+              name: nextcloud-configmap
+              key: MYSQL_DATABASE
+        - name: MYSQL_USER
+          valueFrom:
+            secretKeyRef:
+              name: nextcloud-secrets
+              key: MYSQL_USER
+        - name: MYSQL_PASSWORD
+          valueFrom:
+            secretKeyRef:
+              name: nextcloud-secrets
+              key: MYSQL_PASSWORD
+        - name: MYSQL_HOST
+          valueFrom:
+            configMapKeyRef:
+              name: nextcloud-configmap
+              key: MYSQL_HOST
+        - name: NEXTCLOUD_ADMIN_USER
+          valueFrom:
+            secretKeyRef:
+              name: nextcloud-secrets
+              key: NEXTCLOUD_ADMIN_USER
+        - name: NEXTCLOUD_ADMIN_PASSWORD
+          valueFrom:
+            secretKeyRef:
+              name: nextcloud-secrets
+              key: NEXTCLOUD_ADMIN_PASSWORD
+        - name: NEXTCLOUD_TRUSTED_DOMAINS
+          valueFrom:
+            configMapKeyRef:
+              name: nextcloud-configmap
+              key: NEXTCLOUD_TRUSTED_DOMAINS
+        volumeMounts:
+        - name: server-storage
+          mountPath: /var/www/html
+          subPath: server-data
+      volumes:
+      - name: server-storage
+        persistentVolumeClaim:
+          claimName: nextcloud-shared-storage-claim
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: nextcloud-server
+  labels:
+    app: nextcloud
+spec:
+  selector:
+    pod-label: nextcloud-server-pod
+  ports:
+  - protocol: TCP
+    port: 80
