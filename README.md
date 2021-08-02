@@ -204,7 +204,7 @@ kubectl apply -f https://raw.githubusercontent.com/kinkaraCoding/nextcloud-micro
 ### Create deployment nextcloud-adminer
 Deploy PHP based web ui for nextcloud-db
 ``` shell
-kubectl apply -f https://raw.githubusercontent.com/kinkaraCoding/nextcloud-k8s/main/nextcloud-adminer.yaml
+kubectl apply -f https://raw.githubusercontent.com/kinkaraCoding/nextcloud-microk8s/master/nextcloud-adminer.yaml
 ```  
 
 
