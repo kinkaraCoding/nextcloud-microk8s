@@ -197,7 +197,7 @@ Deploy nextcloud frontend server
 
 
 ``` shell
-kubectl apply -f https://raw.githubusercontent.com/kinkaraCoding/nextcloud-k8s/main/nextcloud-server.yaml
+kubectl apply -f https://raw.githubusercontent.com/kinkaraCoding/nextcloud-microk8s/master/nextcloud-server.yaml
 ```  
 
 
