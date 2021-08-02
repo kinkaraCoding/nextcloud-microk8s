@@ -170,7 +170,7 @@ With this PersistentVolumesClaim(PVC) we request a storage of 10Gi from our Pers
 provided by microk8s´s Storage addon.
 
 ``` shell
-kubectl apply -f https://raw.githubusercontent.com/kinkaraCoding/nextcloud-k8s/main/nextcloud-pvc.yaml
+kubectl apply -f https://raw.githubusercontent.com/kinkaraCoding/nextcloud-microk8s/master/nextcloud-pvc.yaml
 ```
 
 Check if your PVC is bound properly
