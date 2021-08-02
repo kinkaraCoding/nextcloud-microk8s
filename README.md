@@ -189,7 +189,7 @@ nextcloud-shared-storage-claim   Bound    pvc-xxx   10Gi       RWO            mi
 Deploy a mariadb database as backend for nextcloud-server
 
 ``` shell
-kubectl apply -f  https://raw.githubusercontent.com/kinkaraCoding/nextcloud-k8s/main/nextcloud-db.yaml
+kubectl apply -f  https://raw.githubusercontent.com/kinkaraCoding/nextcloud-microk8s/master/nextcloud-db.yaml
 ```
 
 ### Create deployment nextcloud-server
